@@ -1,6 +1,14 @@
 //: Playground - noun: a place where people can play
 
-class LinkedListNode: Equatable {
+class LinkedListNode<T: Equatable>: Equatable {
+    let item: T
+    weak var next: LinkedListNode?
+
+    init(item: T, next: LinkedListNode<T>?) {
+        self.item = item
+        self.next = next
+    }
+    
     static func == (lhs: LinkedListNode, rhs: LinkedListNode) -> Bool {
         if lhs.item == rhs.item {
             if lhs.next == rhs.next {
@@ -9,27 +17,19 @@ class LinkedListNode: Equatable {
         }
         return false
     }
-
-    let item: Int
-    weak var next: LinkedListNode?
-
-    init(item: Int, next: LinkedListNode?) {
-        self.item = item
-        self.next = next
-    }
 }
 
-class LinkedList {
-    var head: LinkedListNode?
-    init(head: LinkedListNode?) {
+class LinkedList<T: Equatable> {
+    var head: LinkedListNode<T>?
+    init(head: LinkedListNode<T>?) {
         self.head = head
     }
-    
+
     public var isEmpty: Bool {
         return (head == nil)
     }
-    
-    public func addElement(item: LinkedListNode) {
+
+    public func addElement(item: LinkedListNode<T>) {
         guard var tempHead = head else {
             head = item
             return
@@ -41,15 +41,15 @@ class LinkedList {
         }
         tempHead.next = item
     }
-    
-    public func removeElement() -> LinkedListNode? {
+
+    public func removeElement() -> LinkedListNode<T>? {
         guard let tempHead = head else {
             return nil
         }
         head = tempHead.next
         return tempHead
     }
-    
+
     public func iterate() {
         var tempHead = head
         while(tempHead?.next != nil) {
@@ -58,8 +58,8 @@ class LinkedList {
             }
         }
     }
-    
-    public func getHead() -> LinkedListNode? {
+
+    public func getHead() -> LinkedListNode<T>? {
         return head
     }
 }
@@ -68,14 +68,14 @@ import XCTest
 
 class LinkedListTest: XCTestCase {
     func testEmpty() {
-        let linkedList = LinkedList(head: nil)
+        let linkedList = LinkedList<Int>(head: nil)
         XCTAssertTrue(linkedList.isEmpty)
         XCTAssertEqual(linkedList.getHead(), nil)
         XCTAssertNil(linkedList.removeElement())
     }
-    
+
     func testTwoElements() {
-        let linkedList = LinkedList(head: nil)
+        let linkedList = LinkedList<Int>(head: nil)
         let l1 = LinkedListNode(item: 1, next: nil)
         let l2 = LinkedListNode(item: 2, next: nil)
         linkedList.addElement(item: l1)
